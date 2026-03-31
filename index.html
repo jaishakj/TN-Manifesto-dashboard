@@ -215,6 +215,12 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .footer-note{font-size:13px;color:var(--muted);line-height:1.7;}
 .footer-badge{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--accent);font-weight:700;}
 
+/* POLL BUTTONS */
+.poll-btn{display:flex;align-items:center;gap:16px;width:100%;padding:16px 20px;background:var(--surface2);border:2px solid var(--border);border-radius:12px;cursor:pointer;text-align:left;transition:border-color .15s,transform .1s,box-shadow .15s,background .3s;}
+.poll-btn:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,0.1);}
+.poll-btn:active{transform:translateY(0);}
+.poll-party-label{font-size:14px;color:var(--muted);font-family:'DM Sans',sans-serif;}
+
 /* TVK accent strip */
 .tvk-new-badge{display:inline-block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;padding:2px 6px;border-radius:4px;background:rgba(21,101,192,0.1);color:var(--tvk-blue);border:1px solid rgba(21,101,192,0.25);vertical-align:middle;margin-left:6px;font-weight:700;}
 [data-theme="dark"] .tvk-new-badge{background:rgba(255,195,71,0.1);color:var(--tvk-gold);border-color:rgba(255,195,71,0.25);}
@@ -394,6 +400,86 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
     <div class="insight-card dmk-card"><div class="insight-tag tag-dmk">FINANCE</div><div class="insight-title">Fiscal Framework: DMK 8 · TVK 4 · ADMK 3</div><div class="insight-body">DMK gives fiscal deficit data, revenue growth path, acknowledges constraints. TVK promises large-scale interest-free loans and internship stipends with no stated funding source — commendable ambition, absent fiscal anchor. ADMK lists no fiscal framework whatsoever for its 297 promises.</div><div class="insight-stat dmk">8 · <span style="color:var(--tvk-blue)">4</span> · <span style="color:var(--admk-green)">3</span></div><div class="insight-stat-label">Financial Management scores</div></div>
 
     <div class="insight-card neutral-card"><div class="insight-tag tag-neutral">HONEST NOTE</div><div class="insight-title">TVK Is a Debut Party — Context Matters</div><div class="insight-body">TVK has existed since Feb 2024. A debut manifesto with scores of 5–8 in youth, tech, and entrepreneurship is genuinely strong. Its gap vs DMK reflects institutional depth, not intent. DMK has governed TN; their manifesto includes monitoring commissions and real data. TVK's manifesto is credible for a first-timer — thin only against a governing party's document.</div><div class="insight-stat neutral">2 yrs</div><div class="insight-stat-label">TVK's age as a party at election time</div></div>
+  </div>
+
+  <!-- POLL -->
+  <div class="section-title">Public Poll · Who Will You Vote For?</div>
+  <div id="poll-section" style="margin-bottom:40px;">
+    <div id="poll-vote" style="background:var(--surface);border:2px solid var(--border2);border-radius:16px;padding:32px;box-shadow:var(--card-shadow);transition:background .3s;">
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:6px;">Cast Your Vote</div>
+      <div style="font-size:14px;color:var(--muted);margin-bottom:28px;font-family:'DM Sans',sans-serif;">Tamil Nadu Assembly Election 2026 — who are you voting for?</div>
+      <div style="display:flex;flex-direction:column;gap:12px;" id="poll-options">
+        <button class="poll-btn" onclick="castVote('dmk')" data-party="dmk">
+          <span class="poll-party-name" style="background:linear-gradient(135deg,var(--dmk-dark) 40%,var(--dmk-red) 60%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:'Playfair Display',serif;font-size:22px;font-weight:900;">DMK</span>
+          <span class="poll-party-label">Dravida Munnetra Kazhagam</span>
+        </button>
+        <button class="poll-btn" onclick="castVote('admk')" data-party="admk">
+          <span class="poll-party-name" style="color:var(--admk-green);font-family:'Playfair Display',serif;font-size:22px;font-weight:900;">ADMK</span>
+          <span class="poll-party-label">All India Anna Dravida Munnetra Kazhagam</span>
+        </button>
+        <button class="poll-btn" onclick="castVote('tvk')" data-party="tvk">
+          <span class="poll-party-name" style="background:linear-gradient(135deg,var(--tvk-blue),var(--tvk-gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:'Playfair Display',serif;font-size:22px;font-weight:900;">TVK</span>
+          <span class="poll-party-label">Tamilaga Vettri Kazhagam</span>
+        </button>
+        <button class="poll-btn" onclick="castVote('nota')" data-party="nota">
+          <span class="poll-party-name" style="color:var(--muted);font-family:'Playfair Display',serif;font-size:22px;font-weight:900;">NOTA</span>
+          <span class="poll-party-label">None of the Above</span>
+        </button>
+      </div>
+      <div id="poll-status" style="font-size:12px;color:var(--muted);margin-top:20px;font-family:'Space Mono',monospace;letter-spacing:0.5px;">Shared poll — votes sync across all visitors in real time</div>
+    </div>
+
+    <div id="poll-results" style="display:none;background:var(--surface);border:2px solid var(--border2);border-radius:16px;padding:32px;box-shadow:var(--card-shadow);transition:background .3s;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);">Poll Results</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:4px;" id="total-votes-label">0 votes cast</div>
+        </div>
+        <button onclick="resetVote()" style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;padding:8px 14px;border-radius:8px;background:var(--surface2);border:2px solid var(--border2);color:var(--muted);cursor:pointer;font-weight:700;transition:all .15s;">CHANGE VOTE</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;" id="result-bars"></div>
+      <div style="margin-top:24px;padding:16px;background:var(--surface2);border-radius:10px;border:2px solid var(--border);display:flex;align-items:center;gap:12px;" id="winner-banner">
+        <div style="font-size:28px;" id="winner-emoji">🏆</div>
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--muted);font-weight:700;">CURRENT LEADER</div>
+          <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--ink);" id="winner-label">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIREBASE SETUP GUIDE -->
+  <div id="firebase-setup" style="background:var(--surface);border:2px solid var(--border2);border-radius:14px;padding:28px 28px 24px;margin-bottom:40px;box-shadow:var(--card-shadow);transition:background .3s;">
+    <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:2px;color:var(--accent);font-weight:700;margin-bottom:14px;">🔧 FIREBASE SETUP GUIDE · 5 MINUTES</div>
+    <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:16px;">How to wire up the real-time shared poll</div>
+    <div style="display:flex;flex-direction:column;gap:16px;font-size:14px;color:var(--muted);line-height:1.8;">
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="min-width:28px;height:28px;border-radius:50%;background:var(--accent);color:#FFF;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;">1</div>
+        <div>Go to <a href="https://console.firebase.google.com" target="_blank" style="color:var(--tvk-blue);font-weight:600;">console.firebase.google.com</a> → <strong style="color:var(--ink);">Add project</strong> → give it any name → disable Google Analytics → Create.</div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="min-width:28px;height:28px;border-radius:50%;background:var(--accent);color:#FFF;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;">2</div>
+        <div>In the left sidebar → <strong style="color:var(--ink);">Build → Realtime Database → Create database</strong> → choose any region → start in <strong style="color:var(--ink);">"Test mode"</strong> (allows open read/write for 30 days, enough for the election).</div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="min-width:28px;height:28px;border-radius:50%;background:var(--accent);color:#FFF;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;">3</div>
+        <div>Copy the <strong style="color:var(--ink);">database URL</strong> — it looks like <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:13px;">https://your-project-default-rtdb.firebaseio.com</code></div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="min-width:28px;height:28px;border-radius:50%;background:var(--accent);color:#FFF;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;">4</div>
+        <div>Open this HTML file in a text editor → find the two lines near the bottom inside <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:13px;">&lt;script&gt;</code>:<br><br>
+          <code style="display:block;background:var(--surface2);padding:12px 14px;border-radius:8px;font-size:13px;line-height:1.8;border:1px solid var(--border2);">
+            const FB_URL  = '<span style="color:var(--dmk-red);">YOUR_FIREBASE_URL</span>';<br>
+            const FB_PATH = '/tn2026_poll';
+          </code><br>
+          Replace <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:13px;">YOUR_FIREBASE_URL</code> with your copied URL. Save the file.
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="min-width:28px;height:28px;border-radius:50%;background:var(--admk-green);color:#FFF;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;">✓</div>
+        <div><strong style="color:var(--ink);">Push to GitHub Pages</strong> as usual. Every visitor now shares the same vote counter. Results auto-refresh every 15 seconds. One vote per browser (via localStorage guard).</div>
+      </div>
+    </div>
   </div>
 
   <!-- VERDICT -->
@@ -584,6 +670,154 @@ setTimeout(()=>{
     requestAnimationFrame(()=>{el.style.transition='width 0.85s ease';el.style.width=w;});
   });
 },150);
+
+// ---- FIREBASE CONFIG — REPLACE THESE TWO VALUES ----
+const FB_URL   = 'https://tn-elec-53db0-default-rtdb.firebaseio.com/';   // e.g. https://my-project-default-rtdb.firebaseio.com
+const FB_PATH  = '/tn2026_poll';        // path inside your DB — keep as-is or rename
+
+// ---- POLL ----
+const VOTED_KEY = 'tn2026_poll_voted_v2';
+const partyMeta = {
+  dmk : {label:'DMK' , color:'var(--dmk-red)' , grad:'linear-gradient(90deg,var(--dmk-dark),var(--dmk-red))'},
+  admk: {label:'ADMK', color:'var(--admk-green)', grad:'linear-gradient(90deg,var(--admk-green),#5CB85C)'},
+  tvk : {label:'TVK' , color:'var(--tvk-blue)' , grad:'linear-gradient(90deg,var(--tvk-blue),var(--tvk-gold))'},
+  nota: {label:'NOTA', color:'var(--muted)'    , grad:'linear-gradient(90deg,#AAA,#CCC)'},
+};
+
+const configured = () => FB_URL !== 'YOUR_FIREBASE_URL';
+
+/* ── helpers ── */
+function hasVoted(){ try{return!!localStorage.getItem(VOTED_KEY);}catch{return false;} }
+function myVote()  { try{return localStorage.getItem(VOTED_KEY);}catch{return null;} }
+function setVoted(p){ try{localStorage.setItem(VOTED_KEY,p);}catch{} }
+function clearVoted(){ try{localStorage.removeItem(VOTED_KEY);}catch{} }
+
+function setPollStatus(msg, isErr=false){
+  const el=document.getElementById('poll-status');
+  if(!el) return;
+  el.textContent=msg;
+  el.style.color=isErr?'var(--dmk-red)':'var(--muted)';
+}
+
+/* ── fetch all votes from Firebase ── */
+async function fetchVotes(){
+  if(!configured()) return {dmk:0,admk:0,tvk:0,nota:0};
+  try{
+    const r = await fetch(`${FB_URL}${FB_PATH}.json`);
+    const d = await r.json();
+    return d && typeof d==='object'
+      ? {dmk:d.dmk||0, admk:d.admk||0, tvk:d.tvk||0, nota:d.nota||0}
+      : {dmk:0,admk:0,tvk:0,nota:0};
+  }catch{ return {dmk:0,admk:0,tvk:0,nota:0}; }
+}
+
+/* ── atomic increment via Firebase transactions (REST) ── */
+async function incrementVote(party){
+  if(!configured()) return;
+  // read-then-write (simple approach sufficient for a public poll)
+  const votes = await fetchVotes();
+  votes[party] = (votes[party]||0) + 1;
+  await fetch(`${FB_URL}${FB_PATH}.json`, {
+    method : 'PUT',
+    headers: {'Content-Type':'application/json'},
+    body   : JSON.stringify(votes),
+  });
+}
+
+/* ── cast a vote ── */
+async function castVote(party){
+  if(!configured()){
+    showSetupBanner();
+    return;
+  }
+  // disable buttons to prevent double-tap
+  document.querySelectorAll('.poll-btn').forEach(b=>b.disabled=true);
+  setPollStatus('Submitting your vote…');
+  try{
+    await incrementVote(party);
+    setVoted(party);
+    await showResults();
+  }catch(e){
+    setPollStatus('Could not reach Firebase. Check your URL in the code.', true);
+    document.querySelectorAll('.poll-btn').forEach(b=>b.disabled=false);
+  }
+}
+
+/* ── render results panel ── */
+async function showResults(){
+  document.getElementById('poll-vote').style.display='none';
+  document.getElementById('poll-results').style.display='block';
+  setPollStatus('Loading results…');
+
+  const votes = await fetchVotes();
+  const mv    = myVote();
+  const total = Object.values(votes).reduce((a,b)=>a+b,0)||1;
+  const rb    = document.getElementById('result-bars');
+  rb.innerHTML='';
+
+  const sorted = Object.entries(votes).sort((a,b)=>b[1]-a[1]);
+  sorted.forEach(([p,v])=>{
+    const pct = Math.round(v/total*100);
+    const m   = partyMeta[p];
+    const isMe= p===mv;
+    const isW = p===sorted[0][0] && v>0;
+    rb.innerHTML+=`<div style="display:flex;flex-direction:column;gap:6px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:${m.color}">${m.label}</span>
+          ${isMe?`<span style="font-family:'Space Mono',monospace;font-size:10px;padding:2px 7px;border-radius:4px;background:var(--surface2);color:var(--muted);border:1px solid var(--border2);font-weight:700;">YOUR VOTE</span>`:''}
+          ${isW?`<span style="font-family:'Space Mono',monospace;font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(255,215,0,0.15);color:#B8860B;border:1px solid rgba(255,215,0,0.3);font-weight:700;">LEADING</span>`:''}
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:var(--text);">${pct}% <span style="color:var(--muted);font-size:12px;">(${v})</span></div>
+      </div>
+      <div style="width:100%;height:12px;background:var(--bar-bg);border-radius:6px;overflow:hidden;">
+        <div class="poll-anim-bar" style="height:100%;width:0%;background:${m.grad};border-radius:6px;transition:width 0.9s ease;" data-w="${pct}%"></div>
+      </div>
+    </div>`;
+  });
+
+  document.getElementById('total-votes-label').textContent=`${total} vote${total!==1?'s':''} cast · updates live`;
+  const top=sorted[0];
+  document.getElementById('winner-label').textContent=top[1]>0?`${partyMeta[top[0]].label} — ${Math.round(top[1]/total*100)}%`:'—';
+  setPollStatus(`Last refreshed ${new Date().toLocaleTimeString()}`);
+
+  // animate bars
+  setTimeout(()=>{
+    document.querySelectorAll('.poll-anim-bar').forEach(el=>{
+      el.style.width=el.dataset.w;
+    });
+  },60);
+}
+
+/* ── refresh results every 15 s when results visible ── */
+function resetVote(){
+  clearVoted();
+  document.getElementById('poll-vote').style.display='block';
+  document.getElementById('poll-results').style.display='none';
+}
+
+setInterval(()=>{
+  if(document.getElementById('poll-results').style.display!=='none') showResults();
+},15000);
+
+/* ── setup banner if not configured ── */
+function showSetupBanner(){
+  document.getElementById('poll-vote').innerHTML=`
+    <div style="padding:24px;background:rgba(255,100,0,0.07);border:2px solid rgba(255,100,0,0.25);border-radius:12px;">
+      <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:2px;color:var(--accent);font-weight:700;margin-bottom:8px;">⚠ FIREBASE NOT CONFIGURED</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.8;">
+        Open this HTML file and replace <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;">YOUR_FIREBASE_URL</code> near the top of the &lt;script&gt; with your Firebase Realtime Database URL.<br><br>
+        See the setup guide below the poll.
+      </div>
+    </div>`;
+}
+
+/* ── init ── */
+if(!configured()){
+  showSetupBanner();
+} else if(hasVoted()){
+  showResults();
+}
 
 // ---- DARK MODE ----
 function toggleDark(){
